@@ -6,6 +6,14 @@ A0[m_, q_] := m (Delta + 1 - Log[m/q])
 
 (* B0 function from [arxiv:hep-ph/9606211 Eq. (B.7)] *)
 (* Arguments are interpreted as squared. *)
+B0[p_, m1_, m2_, q_] := B0[p, m2, m1, q] /; m1 > m2
+
+B0[p_, m1_, m2_, q_] :=
+    Delta + Log[q/m2] /; PossibleZeroQ[p] && PossibleZeroQ[m1 - m2]
+
+B0[p_, m1_, m2_, q_] :=
+    Delta + 1 + (m1 Log[q/m1] - m2 Log[q/m2])/(m1 - m2) /; PossibleZeroQ[p]
+
 B0[p_, m1_, m2_, q_] :=
     Module[{eps, fB, s, xp, xm},
            s = p - m2 + m1;

@@ -48,7 +48,7 @@ void test_b0()
       const double re = v.at(4);
       // const double im = v.at(5);
 
-      CHECK_CLOSE(b0_degrassi(p2, m1, m2, q2), re, 1e-12);
+      CHECK_CLOSE(b0_degrassi(p2, m1, m2, q2), re, 2e-11);
    }
 }
 
