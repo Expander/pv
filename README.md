@@ -1,5 +1,7 @@
 # Passarino-Veltman 1-loop functions
 
+[![Build Status](https://github.com/Expander/pv/workflows/test/badge.svg)](https://github.com/Expander/pv/actions)
+
 This repository contains a collection of reference implementations of
 various Passarino-Veltman 1-loop functions.
 
