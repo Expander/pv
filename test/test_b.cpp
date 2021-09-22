@@ -4,20 +4,23 @@
 unsigned failed = 0;
 unsigned passed = 0;
 
-void check(bool cond)
-{
-   if (cond) {
-      passed++;
-   } else {
-      std::printf("test failed\n");
-      failed++;
-   }
-}
+#define CHECK_EQ(a, b)                                          \
+   do {                                                         \
+      if ((a) == (b)) {                                         \
+         passed++;                                              \
+      } else {                                                  \
+         std::printf("Error: expressions are not equal in line %d: %.17g != %.17g\n", __LINE__, (a), (b));     \
+         failed++;                                              \
+      }                                                         \
+   } while (false);
+
 
 void test_b0()
 {
-   check(b0_degrassi(0,1,1,1) == 0.0);
+   CHECK_EQ(b0_degrassi(0,0,1,1), 1.0);
+   CHECK_EQ(b0_degrassi(0,1,1,1), 0.0);
 }
+
 
 int main()
 {
