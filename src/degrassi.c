@@ -70,10 +70,12 @@ double b0_degrassi(double p2, double m1, double m2, double q2)
          res = -log(p2 / q2) + 2;
       } else {
          const double delta = (m1 - m2)/p2;
+         const double x1 = m1/p2;
+         const double x2 = m2/p2;
          res = -log(p2 / q2) + 2
-               - 0.5 * (1 + delta) * log(m1 / p2)
-               - 0.5 * (1 - delta) * log(m2 / p2)
-               - 2 * omega(m1 / p2, m2 / p2);
+               - 0.5 * (1 + delta) * log(x1)
+               - 0.5 * (1 - delta) * log(x2)
+               - 2 * omega(x1, x2);
       }
    }
 
