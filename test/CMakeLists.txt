@@ -6,4 +6,5 @@ function(add_pv_test name)
   add_test(NAME ${name} COMMAND ${name})
 endfunction()
 
+add_pv_test(bench_b)
 add_pv_test(test_b)
