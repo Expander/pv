@@ -56,26 +56,24 @@ double b0_degrassi(double p2, double m1, double m2, double q2)
    } else {
       if (m1 == 0 && m2 != 0) {
          if (m2 != p2) {
-            res = -(log(m2 / q2) - 2 -
-                    (m2 / p2 - 1) * log(fabs(1 - p2 / m2)));
+            res = -log(m2 / q2) + 2 + (m2 / p2 - 1) * log(fabs(1 - p2 / m2));
          } else {
-            res = -(log(m2 / q2) - 2);
+            res = -log(m2 / q2) + 2;
          }
       } else if (m2 == 0 && m1 != 0) {
          if (m1 != p2) {
-            res = -(log(m1 / q2) - 2 -
-                    (m1 / p2 - 1) * log(fabs(1 - p2 / m1)));
+            res = -log(m1 / q2) + 2 + (m1 / p2 - 1) * log(fabs(1 - p2 / m1));
          } else {
-            res = -(log(m1 / q2) - 2);
+            res = -log(m1 / q2) + 2;
          }
       } else if (m2 == 0 && m1 == 0) {
-         res = -(log(p2 / q2) - 2);
+         res = -log(p2 / q2) + 2;
       } else {
          const double delta = (m1 - m2)/p2;
-         res = -(log(p2 / q2) - 2 +
-                 0.5 * (1 + delta) * log(m1 / p2) +
-                 0.5 * (1 - delta) * log(m2 / p2) +
-                 2 * omega(m1 / p2, m2 / p2));
+         res = -log(p2 / q2) + 2
+               - 0.5 * (1 + delta) * log(m1 / p2)
+               - 0.5 * (1 - delta) * log(m2 / p2)
+               - 2 * omega(m1 / p2, m2 / p2);
       }
    }
 
