@@ -61,7 +61,7 @@ int main()
    using pv::bench::generate_random_scalars;
    using pv::bench::generate_random_complexes;
 
-   const std::size_t N = 1000000;
+   const std::size_t N = 1'000'000;
    const auto min = 0;
    const auto max = 4;
 
@@ -73,10 +73,10 @@ int main()
    std::vector<std::array<double, 4>> values(N);
 
    for (std::size_t i = 0; i < N; ++i) {
-      values[i][0] = s[i];
-      values[i][1] = x[i];
-      values[i][2] = y[i];
-      values[i][3] = q[i];
+      values.at(i).at(0) = s.at(i);
+      values.at(i).at(1) = x.at(i);
+      values.at(i).at(2) = y.at(i);
+      values.at(i).at(3) = q.at(i);
    }
 
    bench(values);
