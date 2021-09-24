@@ -59,7 +59,6 @@ void bench(const T& values_d)
 int main()
 {
    using pv::bench::generate_random_scalars;
-   using pv::bench::generate_random_complexes;
 
    const std::size_t N = 1'000'000;
    const auto min = 0;
