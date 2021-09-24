@@ -15,7 +15,10 @@ std::complex<T> fast_log(const std::complex<T>& z) noexcept
    return std::complex<T>(0.5*std::log(rz*rz + iz*iz), std::atan2(iz, rz));
 }
 
-constexpr double dabs(double a) noexcept { return a >= 0. ? a : -a; }
+constexpr double dabs(double a) noexcept
+{
+   return a >= 0.0 ? a : -a;
+}
 
 // can be made constexpr in C++20
 double fB(const std::complex<double>& x) noexcept
