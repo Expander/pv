@@ -1,4 +1,4 @@
-#include "pv.h"
+#include "pv.hpp"
 #include "read_data.hpp"
 #include <cstdio>
 
@@ -49,6 +49,7 @@ void test_b0()
       // const double im = v.at(5);
 
       CHECK_CLOSE(b0_degrassi(p2, m1, m2, q2), re, 2e-11);
+      CHECK_CLOSE(b0_softsusy(p2, m1, m2, q2), re, 1e-05);
    }
 }
 
