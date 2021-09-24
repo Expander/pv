@@ -69,9 +69,9 @@ double b0_degrassi(double p2, double m1, double m2, double q2)
       } else if (m2 == 0 && m1 == 0) {
          res = -log(p2 / q2) + 2;
       } else {
-         const double delta = (m1 - m2)/p2;
          const double a = m1 / p2;
          const double b = m2 / p2;
+         const double delta = a - b;
          res = -log(p2 / q2) + 2
                - 0.5 * (1 + delta) * log(a)
                - 0.5 * (1 - delta) * log(b)

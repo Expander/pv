@@ -80,7 +80,7 @@ void test_b0()
       return b0_softsusy(s, x, y, q);
    };
 
-   test_b0(degrassi, 2e-11);
+   test_b0(degrassi, 3e-11);
    test_b0(softsusy, 1e-05);
 }
 
