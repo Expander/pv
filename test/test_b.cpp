@@ -1,12 +1,13 @@
 #include "pv.hpp"
 #include "read_data.hpp"
+#include <cmath>
 #include <cstdio>
 
 unsigned failed = 0;
 unsigned passed = 0;
 
 
-#define CHECK_EQ(a, b)                                          \
+#define CHECK_EQUAL(a, b)                                       \
    do {                                                         \
       if ((a) == (b)) {                                         \
          passed++;                                              \
@@ -30,7 +31,8 @@ unsigned passed = 0;
    } while (false);
 
 
-void test_b0()
+template <typename Fn>
+void test_b0(Fn fn, double eps)
 {
    const std::string filename =
       std::string(TEST_DATA_DIR) + PATH_SEPARATOR + "B0.txt";
@@ -48,9 +50,38 @@ void test_b0()
       const double re = v.at(4);
       // const double im = v.at(5);
 
-      CHECK_CLOSE(b0_degrassi(p2, m1, m2, q2), re, 2e-11);
-      CHECK_CLOSE(b0_softsusy(p2, m1, m2, q2), re, 1e-05);
+      CHECK_CLOSE(fn(p2, m1, m2, q2), re, eps);
    }
+
+   const double p2 = 91*91;
+   const double q2 = 100*100;
+
+   // test special cases
+   CHECK_CLOSE(fn(2, 3, 4, 1), -1.14772143349266490, eps);
+   CHECK_CLOSE(fn(1, 1, 2, 1), -0.263943507355163, eps);
+   // CHECK_EQUAL(fn(0, 0, 0, q2), 0.0); // IR divergent case
+   CHECK_CLOSE(fn(p2, 0, 0, q2), 2 - log(p2/q2), eps);
+   CHECK_CLOSE(fn(0, p2, 0, q2), 1 - log(p2/q2), eps);
+   CHECK_CLOSE(fn(p2, p2, 0, q2), 2 - log(p2/q2), eps);
+   CHECK_CLOSE(fn(0, p2, p2, q2), -std::log(p2/q2), eps);
+
+   // symmetries
+   CHECK_EQUAL(fn(0, 0, p2, q2), fn(0, p2, 0, q2));
+   CHECK_EQUAL(fn(p2, 0, p2, q2), fn(p2, p2, 0, q2));
+}
+
+
+void test_b0()
+{
+   const auto degrassi = [] (double s, double x, double y, double q) {
+      return b0_degrassi(s, x, y, q);
+   };
+   const auto softsusy = [] (double s, double x, double y, double q) {
+      return b0_softsusy(s, x, y, q);
+   };
+
+   test_b0(degrassi, 2e-11);
+   test_b0(softsusy, 1e-05);
 }
 
 
