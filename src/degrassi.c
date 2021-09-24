@@ -70,11 +70,11 @@ double b0_degrassi(double p2, double m1, double m2, double q2)
          res = -log(p2 / q2) + 2;
       } else if (m1 == m2) {
          if (p2 <= 4 * m2) {
-            res = 2 - log(m2 / q2)
+            res = -log(m2 / q2) + 2
                   - 2 * sqrt(4 * m2 / p2 - 1) * asin(sqrt(p2 / (4 * m2)));
          } else {
             const double sC = sqrt(1 - 4 * m2 / p2);
-            res = 2 - log(m2 / q2)
+            res = -log(m2 / q2) + 2
                   + sC * log(p2 * (1 - sC) / (2 * m2) - 1);
          }
       } else {
