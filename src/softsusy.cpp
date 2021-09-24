@@ -79,59 +79,41 @@ constexpr double sign(double x) noexcept
    return x >= 0.0 ? 1.0 : -1.0;
 }
 
-constexpr double sqr(double a) noexcept
-{
-   return a*a;
-}
-
 } // anonymous namespace
 
 /**
- * Returns Re(B0(p,m1,m2,q)), from hep-ph/9606211
+ * Returns Re(B0(p^2, m1^2, m2^2, q^2)), from hep-ph/9606211
  */
-double b0_softsusy_(double p, double m1, double m2, double q) noexcept
+double b0_softsusy(double p2, double m1, double m2, double q2) noexcept
 {
-   m1 = std::abs(m1);
-   m2 = std::abs(m2);
-   p = std::abs(p);
-   q = std::abs(q);
-
    if (m1 > m2) {
       std::swap(m1, m2);
    }
 
    // protect against infrared divergence
-   if (is_zero(p, EPSTOL) && is_zero(m1, EPSTOL) && is_zero(m2, EPSTOL)) {
+   if (is_zero(p2, EPSTOL) && is_zero(m1, EPSTOL) && is_zero(m2, EPSTOL)) {
       return 0.0;
    }
 
    // p is not 0
-   if (p > 1.0e-5 * m2) {
-      const double m12 = sqr(m1), m22 = sqr(m2), p2 = sqr(p);
-      const double s = p2 - m22 + m12;
-      const std::complex<double> imin(m12, -EPSTOL);
-      const std::complex<double> x = std::sqrt(sqr(s) - 4.0 * p2 * imin);
+   if (p2 > 1e-10 * m2) {
+      const double s = p2 - m2 + m1;
+      const std::complex<double> imin(m1, -EPSTOL);
+      const std::complex<double> x = std::sqrt(s*s - 4.0 * p2 * imin);
       const std::complex<double> xp  = (s + sign(s)*x) / (2*p2);
       const std::complex<double> xm = imin / (xp*p2);
 
-      return -2.0*std::log(p/q) - fB(xp, xm);
+      return -std::log(p2/q2) - fB(xp, xm);
    }
 
    if (is_close(m1, m2, EPSTOL)) {
-      return -2.0*std::log(m1/q);
+      return -std::log(m1/q2);
    }
 
    if (m1 < 1.0e-15) {
-      return 1.0 - 2.0*std::log(m2/q);
+      return 1.0 - std::log(m2/q2);
    }
 
-   const double m12 = sqr(m1), m22 = sqr(m2);
-
-   return 1.0 - 2.0 * std::log(m2/q)
-        + 2.0 * m12 * std::log(m2/m1) / (m12 - m22);
-}
-
-double b0_softsusy(double p2, double m1, double m2, double q2) noexcept
-{
-   return b0_softsusy_(std::sqrt(p2), std::sqrt(m1), std::sqrt(m2), std::sqrt(q2));
+   return 1.0 - std::log(m2/q2)
+        + m1 * std::log(m2/m1) / (m1 - m2);
 }
