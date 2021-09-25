@@ -104,37 +104,47 @@ double b0(double s, double x, double y, double q) noexcept
       std::swap(x, y);
    }
 
+   // x == y
+   if (x*(1 + EPSTOL) > y) {
+      return b0xx(s, x, q);
+   }
+
+   // s == 0
+   if (s <= 1e-11 * x) {
+      if (x < EPSTOL * y) {
+         return 1 - std::log(y / q);
+      }
+
+      return 1 - std::log(y / q) + x * std::log(y / x) / (x - y);
+   }
+
+   // // x == 0
+   // if (x < EPSTOL * EPSTOL * y) {
+   //    const double del = std::hypot(y - s, EPSTOL * y);
+   //    return 2 - std::log(y / q) + (y - s) / s * std::log(del / s);
+   // }
+
+   // s > 0 && x != y && x > 0
+
    double res = 0;
 
-   if (s == 0) {
-      if (x == 0) {
-         res = 1 - std::log(y / q);
-      } else if (x == y) {
-         res = -std::log(x / q);
+   if (y == 0) {
+      res = -std::log(s / q) + 2;
+   } else if (x == 0) {
+      if (y != s) {
+         res = -std::log(y / q) + 2
+               + (y / s - 1) * std::log(std::abs(1 - s / y));
       } else {
-         res = 1 - std::log(y / q) + x / (x - y) * std::log(y / x);
+         res = -std::log(y / q) + 2;
       }
    } else {
-      if (y == 0) {
-         res = -std::log(s / q) + 2;
-      } else if (x == 0) {
-         if (y != s) {
-            res = -std::log(y / q) + 2
-                  + (y / s - 1) * std::log(std::abs(1 - s / y));
-         } else {
-            res = -std::log(y / q) + 2;
-         }
-      } else if (x == y) {
-         res = b0xx(s, x, q);
-      } else {
-         const double a = x / s;
-         const double b = y / s;
-         const double delta = a - b;
-         res = -std::log(s / q) + 2
-               - 0.5 * (1 + delta) * std::log(a)
-               - 0.5 * (1 - delta) * std::log(b)
-               - 2 * omega(a, b);
-      }
+      const double a = x / s;
+      const double b = y / s;
+      const double delta = a - b;
+      res = -std::log(s / q) + 2
+            - 0.5 * (1 + delta) * std::log(a)
+            - 0.5 * (1 - delta) * std::log(b)
+            - 2 * omega(a, b);
    }
 
    return res;

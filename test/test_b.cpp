@@ -144,6 +144,7 @@ int main()
 {
    test_b0();
 
+   std::printf("Failed tests: [%u/%u]\n", failed, passed + failed);
    std::printf("Passed tests: [%u/%u]\n", passed, passed + failed);
 
    return failed != 0;
