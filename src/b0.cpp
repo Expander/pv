@@ -113,7 +113,7 @@ double b0(double s, double x, double y, double q) noexcept
       } else if (x == 0) {
          if (y != s) {
             res = -std::log(y / q) + 2
-                  + (y / s - 1) * std::log(fabs(1 - s / y));
+                  + (y / s - 1) * std::log(std::abs(1 - s / y));
          } else {
             res = -std::log(y / q) + 2;
          }
