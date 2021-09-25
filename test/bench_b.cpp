@@ -46,12 +46,17 @@ void bench(const T& values_d)
    print_headline("B0");
 
    bench_fn([&](double s, double x, double y, double q) {
+               return pv::b0(s,x,y,q);
+            },
+            values_d, "B0", "real");
+
+   bench_fn([&](double s, double x, double y, double q) {
                return b0_degrassi(s,x,y,q);
             },
             values_d, "Degrassi", "real");
 
    bench_fn([&](double s, double x, double y, double q) {
-               return b0_softsusy(s,x,y,q);
+               return pv::b0_softsusy(s,x,y,q);
             },
             values_d, "SOFTSUSY", "real");
 }

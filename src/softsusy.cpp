@@ -84,6 +84,8 @@ constexpr double sign(double x) noexcept
 
 } // anonymous namespace
 
+namespace pv {
+
 /**
  * Returns Re(B0(p^2, m1^2, m2^2, q^2)), from hep-ph/9606211
  */
@@ -120,3 +122,5 @@ double b0_softsusy(double p2, double m1, double m2, double q2) noexcept
    return 1.0 - std::log(m2/q2)
         + m1 * std::log(m2/m1) / (m1 - m2);
 }
+
+} // namespace pv

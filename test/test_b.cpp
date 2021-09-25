@@ -119,13 +119,17 @@ void test_b0_xx(Fn fn, double eps)
 
 void test_b0()
 {
+   const auto b0 = [] (double s, double x, double y, double q) {
+      return pv::b0(s, x, y, q);
+   };
    const auto degrassi = [] (double s, double x, double y, double q) {
       return b0_degrassi(s, x, y, q);
    };
    const auto softsusy = [] (double s, double x, double y, double q) {
-      return b0_softsusy(s, x, y, q);
+      return pv::b0_softsusy(s, x, y, q);
    };
 
+   test_b0(b0, 3e-11);
    test_b0(degrassi, 3e-11);
    test_b0(softsusy, 1e-05);
    // test_b0_limits(degrassi, 1e-02);
