@@ -3,6 +3,8 @@
 
 namespace {
 
+constexpr double EPSTOL = 1.0e-15; ///< underflow accuracy
+
 /*
  * Degrassi and Sirlin, Phys. Rev. D46 (1992) 3104,
  * Appendix A, Eq.(A3)
@@ -39,8 +41,6 @@ double omega(double a, double b) noexcept
  */
 double b0xx(double s, double x, double q) noexcept
 {
-   constexpr double EPSTOL = 1.0e-15; ///< underflow accuracy
-
    if (s < EPSTOL * q && x < EPSTOL * q) {
       return 0; // IR divergence
    } else if (s < 1e-3*x) {
@@ -93,14 +93,21 @@ namespace pv {
  */
 double b0(double s, double x, double y, double q) noexcept
 {
-   double res = 0;
+   const double eps_q = EPSTOL * q;
+
+   // protect against infrared divergence
+   if (s < eps_q && x < eps_q && y < eps_q) {
+      return 0;
+   }
 
    if (x > y) {
       std::swap(x, y);
    }
 
+   double res = 0;
+
    if (s == 0) {
-      if (x == 0 && y != 0) {
+      if (x == 0) {
          res = 1 - std::log(y / q);
       } else if (x == y) {
          res = -std::log(x / q);
