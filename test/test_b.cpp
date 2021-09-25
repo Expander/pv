@@ -71,6 +71,52 @@ void test_b0(Fn fn, double eps)
 }
 
 
+template <typename Fn>
+void test_b0_limits(Fn fn, double eps)
+{
+   const std::string filename =
+      std::string(TEST_DATA_DIR) + PATH_SEPARATOR + "B0_limits.txt";
+   const auto data = read_from_file(filename);
+
+   for (const auto& v: data) {
+      if (v.size() < 5) {
+         continue;
+      }
+
+      const double p2 = v.at(0);
+      const double m1 = v.at(1);
+      const double m2 = v.at(2);
+      const double q2 = v.at(3);
+      const double re = v.at(4);
+
+      CHECK_CLOSE(fn(p2, m1, m2, q2), re, eps);
+   }
+}
+
+
+template <typename Fn>
+void test_b0_xx(Fn fn, double eps)
+{
+   const std::string filename =
+      std::string(TEST_DATA_DIR) + PATH_SEPARATOR + "B0_xx.txt";
+   const auto data = read_from_file(filename);
+
+   for (const auto& v: data) {
+      if (v.size() < 5) {
+         continue;
+      }
+
+      const double p2 = v.at(0);
+      const double m1 = v.at(1);
+      const double m2 = v.at(2);
+      const double q2 = v.at(3);
+      const double re = v.at(4);
+
+      CHECK_CLOSE(fn(p2, m1, m2, q2), re, eps);
+   }
+}
+
+
 void test_b0()
 {
    const auto degrassi = [] (double s, double x, double y, double q) {
@@ -82,6 +128,10 @@ void test_b0()
 
    test_b0(degrassi, 3e-11);
    test_b0(softsusy, 1e-05);
+   // test_b0_limits(degrassi, 1e-02);
+   // test_b0_limits(softsusy, 1e-02);
+   // test_b0_xx(degrassi, 1e-02);
+   // test_b0_xx(softsusy, 1e-02);
 }
 
 
