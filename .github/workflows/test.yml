@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macOS-latest]
-        cxxflags: ["", "-Ofast -ffast-math"]
+        cxxflags: [""]
 
     steps:
     - uses: actions/checkout@v1
