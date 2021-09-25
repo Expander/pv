@@ -1,4 +1,5 @@
 #include <cmath>
+#include <algorithm>
 
 namespace {
 
@@ -94,33 +95,28 @@ double b0(double s, double x, double y, double q) noexcept
 {
    double res = 0;
 
+   if (x > y) {
+      std::swap(x, y);
+   }
+
    if (s == 0) {
       if (x == 0 && y != 0) {
          res = 1 - std::log(y / q);
-      } else if (x != 0 && y == 0) {
-         res = 1 - std::log(x / q);
       } else if (x == y) {
          res = -std::log(x / q);
       } else {
          res = 1 - std::log(y / q) + x / (x - y) * std::log(y / x);
       }
    } else {
-      if (x == 0 && y != 0) {
+      if (y == 0) {
+         res = -std::log(s / q) + 2;
+      } else if (x == 0) {
          if (y != s) {
             res = -std::log(y / q) + 2
                   + (y / s - 1) * std::log(fabs(1 - s / y));
          } else {
             res = -std::log(y / q) + 2;
          }
-      } else if (y == 0 && x != 0) {
-         if (x != s) {
-            res = -std::log(x / q) + 2
-                  + (x / s - 1) * std::log(fabs(1 - s / x));
-         } else {
-            res = -std::log(x / q) + 2;
-         }
-      } else if (y == 0 && x == 0) {
-         res = -std::log(s / q) + 2;
       } else if (x == y) {
          res = b0xx(s, x, q);
       } else {
