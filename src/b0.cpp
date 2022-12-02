@@ -109,7 +109,7 @@ double b0(double s, double x, double y, double q) noexcept
       return b0xx(s, x, q);
    }
 
-   // s == 0
+   // s << x
    if (s <= 1e-11 * x) {
       if (x < EPSTOL * y) {
          return 1 - std::log(y / q);
@@ -118,24 +118,17 @@ double b0(double s, double x, double y, double q) noexcept
       return 1 - std::log(y / q) + x * std::log(y / x) / (x - y);
    }
 
-   // // x == 0
-   // if (x < EPSTOL * EPSTOL * y) {
-   //    const double del = std::hypot(y - s, EPSTOL * y);
-   //    return 2 - std::log(y / q) + (y - s) / s * std::log(del / s);
-   // }
-
-   // s > 0 && x != y && x > 0
-
    double res = 0;
 
-   if (y == 0) {
+   if (y < 1e-4 * s) { // x < y << s
       res = -std::log(s / q) + 2;
-   } else if (x == 0) {
-      if (y != s) {
+   } else if (x < 1e-3 * y) { // x << y
+      // s == y
+      if (std::abs(y - s) < EPSTOL * std::max(s, y)) {
+         res = -std::log(y / q) + 2;
+      } else {
          res = -std::log(y / q) + 2
                + (y / s - 1) * std::log(std::abs(1 - s / y));
-      } else {
-         res = -std::log(y / q) + 2;
       }
    } else {
       const double a = x / s;
