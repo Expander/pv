@@ -52,7 +52,7 @@ double b0xx(double s, double x, double q) noexcept
          + d*(1./2520
          + d*(1./13860
          + d*(1./72072
-         + d/360360))))));
+         + d*1./360360))))));
    } else if (s <= 4 * x) {
       return 2 - std::log(x / q) -
              2 * std::sqrt(4 * x / s - 1) *
