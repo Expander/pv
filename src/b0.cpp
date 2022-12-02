@@ -118,29 +118,26 @@ double b0(double s, double x, double y, double q) noexcept
       return 1 - std::log(y / q) + x * std::log(y / x) / (x - y);
    }
 
-   double res = 0;
-
    if (y < 1e-4 * s) { // x < y << s
-      res = -std::log(s / q) + 2;
+      return -std::log(s / q) + 2;
    } else if (x < 1e-3 * y) { // x << y
       // s == y
       if (std::abs(y - s) < EPSTOL * std::max(s, y)) {
-         res = -std::log(y / q) + 2;
+         return -std::log(y / q) + 2;
       } else {
-         res = -std::log(y / q) + 2
-               + (y / s - 1) * std::log(std::abs(1 - s / y));
+         return -std::log(y / q) + 2
+                + (y / s - 1) * std::log(std::abs(1 - s / y));
       }
-   } else {
-      const double a = x / s;
-      const double b = y / s;
-      const double delta = a - b;
-      res = -std::log(s / q) + 2
-            - 0.5 * (1 + delta) * std::log(a)
-            - 0.5 * (1 - delta) * std::log(b)
-            - 2 * omega(a, b);
    }
 
-   return res;
+   const double a = x / s;
+   const double b = y / s;
+   const double delta = a - b;
+
+   return -std::log(s / q) + 2
+          - 0.5 * (1 + delta) * std::log(a)
+          - 0.5 * (1 - delta) * std::log(b)
+          - 2 * omega(a, b);
 }
 
 } // namespace pv
