@@ -12,22 +12,19 @@ constexpr double EPSTOL = 1.0e-15; ///< underflow accuracy
 double omega(double a, double b) noexcept
 {
    const double C = 0.5 * (a + b) - 0.25 * (a - b)*(a - b) - 0.25;
-   double res = 0;
 
    if (C > 0) {
       const double sC = std::sqrt(C);
-      res = sC * (std::atan((1 + a - b) / (2 * sC)) +
-                  std::atan((1 - a + b) / (2 * sC)));
+      return sC * (std::atan((1 + a - b) / (2 * sC)) +
+                   std::atan((1 - a + b) / (2 * sC)));
    } else if (C < 0) {
       const double sC = std::sqrt(-C);
-      res = 0.5 * sC *
-            std::log((0.5 * (a + b - 1) - sC) /
-                     (0.5 * (a + b - 1) + sC));
-   } else {
-      res = 0;
+      return 0.5 * sC *
+             std::log((0.5 * (a + b - 1) - sC) /
+                      (0.5 * (a + b - 1) + sC));
    }
 
-   return res;
+   return 0;
 }
 
 /**
