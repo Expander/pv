@@ -134,7 +134,7 @@ void test_b0()
    test_b0(softsusy, 1e-05);
    // test_b0_limits(degrassi, 1e-02);
    // test_b0_limits(softsusy, 1e-02);
-   test_b0_xx(b0, 1e-02);
+   test_b0_xx(b0, 1e-12);
    // test_b0_xx(degrassi, 1e-02);
    // test_b0_xx(softsusy, 1e-02);
 }
