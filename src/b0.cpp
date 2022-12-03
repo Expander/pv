@@ -121,7 +121,8 @@ double b0(double s, double x, double y, double q) noexcept
    } else if (x < 1e-3 * y) { // x << y
       // s == y
       if (std::abs(y - s) < EPSTOL * std::max(s, y)) {
-         return -std::log(y / q) + 2;
+         const double pi = 3.1415926535897932;
+         return -std::log(y / q) + 2 - pi * std::sqrt(x / s);
       } else if (s < y) {
          return -std::log(y / q) + 2
                 + (y / s - 1) * std::log1p(-s / y);
