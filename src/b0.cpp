@@ -108,7 +108,7 @@ double b0(double s, double x, double y, double q) noexcept
    }
 
    // s << x
-   if (s <= 1e-11 * x) {
+   if (s <= 1e-9 * x) {
       if (x < EPSTOL * y) {
          return 1 - std::log(y / q);
       }
