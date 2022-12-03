@@ -124,9 +124,12 @@ double b0(double s, double x, double y, double q) noexcept
       // s == y
       if (std::abs(y - s) < EPSTOL * std::max(s, y)) {
          return -std::log(y / q) + 2;
+      } else if (s < y) {
+         return -std::log(y / q) + 2
+                + (y / s - 1) * std::log1p(-s / y);
       } else {
          return -std::log(y / q) + 2
-                + (y / s - 1) * std::log(std::abs(1 - s / y));
+                + (y / s - 1) * std::log(s / y - 1);
       }
    }
 
