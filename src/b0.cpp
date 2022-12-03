@@ -52,13 +52,13 @@ double b0xx(double s, double x, double q) noexcept
          + d*(1./72072
          + d*1./360360))))));
    } else if (s <= 4 * x) {
+      const double xs = 4 * x / s;
       return 2 - std::log(x / q) -
-             2 * std::sqrt(4 * x / s - 1) *
-                std::asin(std::sqrt(s / (4 * x)));
+             2 * std::sqrt(xs - 1) * std::asin(std::sqrt(1 / xs));
    } else if (s < 1e2 * x) {
-      const double sq = std::sqrt(1 - 4 * x / s);
-      return 2 - std::log(x / q) +
-         sq * std::log(s * (1 - sq) / (2 * x) - 1);
+      const double xs = 2 * x / s;
+      const double sq = std::sqrt(1 - 2 * xs);
+      return 2 - std::log(x / q) + sq * std::log((1 - sq) / xs - 1);
    } else if (s*EPSTOL < x) {
       const double d = x / s;
       const double logd = std::log(d);
