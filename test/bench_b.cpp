@@ -1,3 +1,4 @@
+#include "alt.hpp"
 #include "bench.hpp"
 #include "pv.hpp"
 #include <array>
