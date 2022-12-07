@@ -123,19 +123,21 @@ double b0(double s, double x, double y, double q) noexcept
    }
 
    if (y < 1e-4 * s) { // x < y << s
-      return -std::log(s / q) + 2;
+      return 2 - std::log(s / q);
    } else if (x < 1e-3 * y) { // x << y
       // s == y
       if (std::abs(y - s) < EPSTOL * std::max(s, y)) {
          const double pi = 3.1415926535897932;
          const double xs = x / s;
-         return -std::log(y / q) + 2 - pi * std::sqrt(xs) + xs - 0.5 * xlogx(xs);
+         return 2 - std::log(y / q) - pi * std::sqrt(xs) + xs - 0.5 * xlogx(xs);
       } else if (s < y) {
-         return -std::log(y / q) + 2
-                + (y / s - 1) * std::log1p(-s / y);
+         const double ys = y / s;
+         return 2 - std::log(y / q)
+                + (ys - 1) * std::log1p(-1 / ys);
       } else {
-         return -std::log(y / q) + 2
-                + (y / s - 1) * std::log(s / y - 1);
+         const double ys = y / s;
+         return 2 - std::log(y / q)
+                + (ys - 1) * std::log(1 / ys - 1);
       }
    }
 
@@ -143,7 +145,7 @@ double b0(double s, double x, double y, double q) noexcept
    const double b = y / s;
    const double delta = a - b;
 
-   return -std::log(s / q) + 2
+   return 2 - std::log(s / q)
           - 0.5 * (1 + delta) * std::log(a)
           - 0.5 * (1 - delta) * std::log(b)
           - 2 * omega(a, b);
