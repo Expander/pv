@@ -76,6 +76,12 @@ double b0xx(double s, double x, double q) noexcept
    }
 }
 
+/// returns x * log(x)
+double xlogx(double x) noexcept
+{
+   return x == 0 ? 0 : x * std::log(x);
+}
+
 } // anonymous namespace
 
 namespace pv {
@@ -122,7 +128,8 @@ double b0(double s, double x, double y, double q) noexcept
       // s == y
       if (std::abs(y - s) < EPSTOL * std::max(s, y)) {
          const double pi = 3.1415926535897932;
-         return -std::log(y / q) + 2 - pi * std::sqrt(x / s);
+         const double xs = x / s;
+         return -std::log(y / q) + 2 - pi * std::sqrt(xs) + xs - 0.5 * xlogx(xs);
       } else if (s < y) {
          return -std::log(y / q) + 2
                 + (y / s - 1) * std::log1p(-s / y);
