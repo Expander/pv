@@ -39,7 +39,9 @@ double omega(double a, double b) noexcept
  */
 double b0xx(double s, double x, double q) noexcept
 {
-   if (s < EPSTOL * q && x < EPSTOL * q) {
+   const double eps_q = EPSTOL * q;
+
+   if (s < eps_q && x < eps_q) {
       return 0; // IR divergence
    } else if (s < 1e-3*x) {
       const double d = s / x;
