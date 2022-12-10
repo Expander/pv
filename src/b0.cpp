@@ -130,16 +130,16 @@ double b0(double s, double x, double y, double q) noexcept
       // s == y
       if (std::abs(y - s) < EPSTOL * std::max(s, y)) {
          const double pi = 3.1415926535897932;
-         const double xs = x / s;
-         return 2 - std::log(y / q) - pi * std::sqrt(xs) + xs - 0.5 * xlogx(xs);
+         const double a = x / s;
+         return 2 - std::log(y / q) - pi * std::sqrt(a) + a - 0.5 * xlogx(a);
       } else if (s < y) {
-         const double ys = y / s;
+         const double b = y / s;
          return 2 - std::log(y / q)
-                + (ys - 1) * std::log1p(-1 / ys);
+                + (b - 1) * std::log1p(-1 / b);
       } else {
-         const double ys = y / s;
+         const double b = y / s;
          return 2 - std::log(y / q)
-                + (ys - 1) * std::log(1 / ys - 1);
+                + (b - 1) * std::log(1 / b - 1);
       }
    }
 
