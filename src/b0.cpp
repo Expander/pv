@@ -136,10 +136,19 @@ double b0(double s, double x, double y, double q) noexcept
          const double b = y / s;
          return 2 - std::log(y / q)
                 + (b - 1) * std::log1p(-1 / b);
-      } else {
+      } else { // s > y
+         const double a = x / s;
          const double b = y / s;
-         return 2 - std::log(y / q)
-                + (b - 1) * std::log(1 / b - 1);
+         const double c = 1 - b;
+         const double lcb = std::log(c / b);
+         const double lb = std::log(b);
+         double res = 2 - std::log(y / q) - c * lcb;
+
+         if (a > 0) {
+            res += a / c * (1 + b * lcb + lcb + lb - std::log(a));
+         }
+
+         return res;
       }
    }
 
