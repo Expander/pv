@@ -16,13 +16,13 @@ double omega(double a, double b) noexcept
    if (C > 0) {
       const double sC = std::sqrt(C);
       const double iC = 0.5 / sC;
-      return sC * (std::atan((1 + a - b) * iC) +
-                   std::atan((1 - a + b) * iC));
+      const double d = a - b;
+      return sC * (std::atan((1 + d) * iC) +
+                   std::atan((1 - d) * iC));
    } else if (C < 0) {
       const double sC = std::sqrt(-C);
-      return 0.5 * sC *
-             std::log((0.5 * (a + b - 1) - sC) /
-                      (0.5 * (a + b - 1) + sC));
+      const double c = 0.5 * (a + b - 1);
+      return 0.5 * sC * std::log((c - sC) / (c + sC));
    }
 
    return 0;
