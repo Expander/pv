@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
       std::printf("Re[b0(s = %.17g, x = %.17g, y = %.17g, q = %.17g)] = %.17g\n", s, x, y, q, pv::b0(s, x, y, q));
    } else {
       std::printf(
-         "Usage: (q = 1\n"
+         "Usage: (q = 1)\n"
          "  <program-name> x\n"
          "  <program-name> s x y\n"
          );
