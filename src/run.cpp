@@ -19,10 +19,16 @@ int main(int argc, char* argv[])
       std::printf("Re[b0(s = %.17g, x = %.17g, y = %.17g, q = %.17g)] = %.17g\n", s, x, y, q, pv::reb0(s, x, y, q));
    } else {
       std::printf(
-         "Usage:\n"
-         "  <program-name> m^2\n"
-         "  <program-name> p^2 m1^2 m2^2\n"
-         "Note: The renormalization scale Q is always set to Q = 1.\n"
+         "Usage: <program-name> [parameters]\n"
+         "\n"
+         "This program calculates n-point 1-loop integrals.\n"
+         "The value of n depends on the number of given parameters:\n"
+         "\n"
+         "  n = 1: <program-name> m^2\n"
+         "  n = 2: <program-name> p^2 m1^2 m2^2\n"
+         "\n"
+         "The parameters are always interpreted as squared masses or squared energies.\n"
+         "The renormalization scale Q is always set to Q = 1.\n"
          );
       return EXIT_FAILURE;
    }
