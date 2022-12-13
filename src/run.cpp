@@ -1,7 +1,9 @@
 #include "pv.hpp"
 #include <cstdio>
 #include <cstdlib>
+#include <exception>
 #include <sstream>
+#include <string>
 
 
 double string_to_double(char* str)
@@ -9,6 +11,9 @@ double string_to_double(char* str)
    std::istringstream iss(str);
    double x;
    iss >> x;
+   if (iss.fail()) {
+      throw std::range_error(std::string("input not convertible to double: ") + str);
+   }
    return x;
 }
 
