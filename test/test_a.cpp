@@ -13,7 +13,7 @@ void test_a0(Fn fn, double eps)
    const auto data = read_from_file(filename);
 
    for (const auto& v: data) {
-      if (v.size() < 6) {
+      if (v.size() < 3) {
          continue;
       }
 
