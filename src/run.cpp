@@ -1,22 +1,34 @@
 #include "pv.hpp"
 #include <cstdio>
 #include <cstdlib>
-#include <string>
+#include <sstream>
+
+
+double string_to_double(char* str)
+{
+   std::istringstream iss(str);
+   double x;
+   iss >> x;
+   return x;
+}
+
 
 int main(int argc, char* argv[])
 {
    if (argc == 2) {
       // A0 function
-      const double x = std::stod(argv[1]);
+      const double x = string_to_double(argv[1]);
       const double q = 1;
-      std::printf("Re[a0(x = %.17g, q = %.17g)] = %.17g\n", x, q, pv::rea0(x, q));
+      std::printf("Re[a0(x = %.17g, q = %.17g)] = %.17g\n",
+                  x, q, pv::rea0(x, q));
    } else if (argc == 4) {
       // B0 function
-      const double s = std::stod(argv[1]);
-      const double x = std::stod(argv[2]);
-      const double y = std::stod(argv[3]);
+      const double s = string_to_double(argv[1]);
+      const double x = string_to_double(argv[2]);
+      const double y = string_to_double(argv[3]);
       const double q = 1;
-      std::printf("Re[b0(s = %.17g, x = %.17g, y = %.17g, q = %.17g)] = %.17g\n", s, x, y, q, pv::reb0(s, x, y, q));
+      std::printf("Re[b0(s = %.17g, x = %.17g, y = %.17g, q = %.17g)] = %.17g\n",
+                  s, x, y, q, pv::reb0(s, x, y, q));
    } else {
       std::printf(
          "Usage: <program-name> [parameters]\n"
