@@ -9,4 +9,5 @@ function(add_pv_test name)
 endfunction()
 
 add_pv_test(bench_b)
+add_pv_test(test_a)
 add_pv_test(test_b)
