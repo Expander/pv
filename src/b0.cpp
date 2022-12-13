@@ -37,7 +37,7 @@ double omega(double a, double b) noexcept
  *
  * @return Re(B0(s,x,x,q))
  */
-double b0xx(double s, double x, double q) noexcept
+double reb0xx(double s, double x, double q) noexcept
 {
    const double eps_q = EPSTOL * q;
 
@@ -97,7 +97,7 @@ namespace pv {
  * @param q squared renormalization scale
  * @return real part of B0
  */
-double b0(double s, double x, double y, double q) noexcept
+double reb0(double s, double x, double y, double q) noexcept
 {
    const double eps_q = EPSTOL * q;
 
@@ -112,7 +112,7 @@ double b0(double s, double x, double y, double q) noexcept
 
    // x == y
    if (x*(1 + EPSTOL) > y) {
-      return b0xx(s, x, q);
+      return reb0xx(s, x, q);
    }
 
    // s << x

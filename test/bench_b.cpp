@@ -47,7 +47,7 @@ void bench(const T& values_d)
    print_headline("B0");
 
    bench_fn([&](double s, double x, double y, double q) {
-               return pv::b0(s,x,y,q);
+               return pv::reb0(s,x,y,q);
             },
             values_d, "B0", "real");
 

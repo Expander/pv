@@ -10,7 +10,7 @@ namespace pv {
  * @param q squared renormalization scale, q > 0
  * @return real part of A0
  */
-double a0(double x, double q) noexcept
+double rea0(double x, double q) noexcept
 {
    if (q <= 0) {
       return std::numeric_limits<double>::quiet_NaN();

@@ -121,7 +121,7 @@ void test_b0_xx(Fn fn, double eps)
 void test_b0()
 {
    const auto b0 = [] (double s, double x, double y, double q) {
-      return pv::b0(s, x, y, q);
+      return pv::reb0(s, x, y, q);
    };
    const auto degrassi = [] (double s, double x, double y, double q) {
       return b0_degrassi(s, x, y, q);
