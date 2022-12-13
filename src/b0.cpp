@@ -94,8 +94,8 @@ namespace pv {
  * @param s squared momentum
  * @param x squared mass
  * @param y squared mass
- * @param q squared renormalization scale
- * @return real part of B0
+ * @param q squared renormalization scale, q > 0
+ * @return Re[B0(s, x, y, q)]
  */
 double reb0(double s, double x, double y, double q) noexcept
 {

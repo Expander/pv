@@ -8,7 +8,7 @@ namespace pv {
  *
  * @param x squared mass
  * @param q squared renormalization scale, q > 0
- * @return real part of A0
+ * @return Re[A0(x, q)]
  */
 double rea0(double x, double q) noexcept
 {
