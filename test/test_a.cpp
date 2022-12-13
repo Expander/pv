@@ -31,7 +31,7 @@ void test_a0()
       return pv::rea0(x, q);
    };
 
-   test_a0(a0, 3e-11);
+   test_a0(a0, 1e-15);
 }
 
 
