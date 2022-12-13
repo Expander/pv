@@ -20,7 +20,7 @@ double rea0(double x, double q) noexcept
       return 0;
    }
 
-   return x * (1 - std::log(x/q));
+   return x * (1 - std::log(std::abs(x)/q));
 }
 
 } // namespace pv
