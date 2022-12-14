@@ -144,7 +144,7 @@ double reb0(double s, double x, double y, double q) noexcept
          double res = 2 - std::log(y / q) - c * lcb;
 
          if (a > 0) {
-            res += a / c * (1 + b * lcb + lcb + std::log(b / a));
+            res += a / c * (1 + b * lcb + std::log(c / a));
          }
 
          return res;
