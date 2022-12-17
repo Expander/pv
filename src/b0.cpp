@@ -126,7 +126,7 @@ double reb0(double s, double x, double y, double q) noexcept
 
    if (y < 1e-4 * s) { // x < y << s
       return 2 - std::log(s / q);
-   } else if (x < 1e-3 * y) { // x << y
+   } else if (x < EPSTOL * y) { // x << y
       // s == y
       if (std::abs(y - s) < EPSTOL * std::max(s, y)) {
          const double pi = 3.1415926535897932;
@@ -134,20 +134,10 @@ double reb0(double s, double x, double y, double q) noexcept
          return 2 - std::log(y / q) - pi * std::sqrt(a) + a - 0.5 * xlogx(a);
       } else if (s < y) {
          const double b = y / s;
-         return 2 - std::log(y / q)
-                + (b - 1) * std::log1p(-1 / b);
+         return 2 - std::log(y / q) + (b - 1) * std::log1p(-1 / b);
       } else { // s > y
-         const double a = x / s;
          const double b = y / s;
-         const double c = 1 - b;
-         const double lcb = std::log(c / b);
-         double res = 2 - std::log(y / q) - c * lcb;
-
-         if (a > 0) {
-            res += a / c * (1 + b * lcb + std::log(c / a));
-         }
-
-         return res;
+         return 2 - std::log(y / q) + (b - 1) * std::log(1 / b - 1);
       }
    }
 
