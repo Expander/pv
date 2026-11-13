@@ -12,17 +12,15 @@ constexpr double EPSTOL = std::numeric_limits<double>::epsilon(); ///< underflow
  */
 double omega(double a, double b) noexcept
 {
-   const double C = 0.5 * (a + b) - 0.25 * (a - b)*(a - b) - 0.25;
+   const double d = a - b;
+   const double C = 0.5 * (a + b) - 0.25 * d * d - 0.25;
+   const double c = 0.5 * (a + b - 1);
 
    if (C > 0) {
-      const double sC = std::sqrt(C);
-      const double iC = 0.5 / sC;
-      const double d = a - b;
-      return sC * (std::atan((1 + d) * iC) +
-                   std::atan((1 - d) * iC));
+      const double r = std::sqrt(C);
+      return r * std::atan2(r, c);
    } else if (C < 0) {
       const double sC = std::sqrt(-C);
-      const double c = 0.5 * (a + b - 1);
       return 0.5 * sC * std::log((c - sC) / (c + sC));
    }
 
