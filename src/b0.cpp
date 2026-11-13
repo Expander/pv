@@ -1,9 +1,10 @@
-#include <cmath>
 #include <algorithm>
+#include <cmath>
+#include <limits>
 
 namespace {
 
-constexpr double EPSTOL = 1.0e-15; ///< underflow accuracy
+constexpr double EPSTOL = std::numeric_limits<double>::epsilon(); ///< underflow accuracy
 
 /*
  * Degrassi and Sirlin, Phys. Rev. D46 (1992) 3104,
