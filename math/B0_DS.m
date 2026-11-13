@@ -10,8 +10,9 @@ B0[p_, m1_, m2_, q_] :=
     Delta + 1 + (m1 Log[q/m1] - m2 Log[q/m2])/(m1 - m2) /; PossibleZeroQ[p]
 
 B0[p_, m1_, m2_, q_] :=
-    Module[{a = x / s, b = y / s, delta = a - b},
-           (Delta - Log[s / q] + 2
+    Module[{a = m1 / p, b = m2 / p, delta},
+           delta = a - b;
+           (Delta - Log[p / q] + 2
             - (1 + delta)/2 Log[a]
             - (1 - delta)/2 Log[b]
             - 2 Omega[a, b])
