@@ -27,6 +27,24 @@ double omega(double a, double b) noexcept
    return 0;
 }
 
+double H(double z) noexcept
+{
+   if (z == 0)
+      return 0;
+   return z * std::log(z) + (1 - z) * std::log1p(-z);
+}
+
+double log_ratio(double a, double b) noexcept
+{
+   const double r = a / b;
+
+   if (r >= std::numeric_limits<double>::min() && std::isfinite(r)) {
+      return std::log(r);
+   }
+
+   return std::log(a) - std::log(b);
+}
+
 /**
  * Re(B0(s,x,x,q)), Eq.(2.4) from [hep-ph/0701051]
  *
@@ -173,8 +191,16 @@ double reb0(double s, double x, double y, double q) noexcept
       return -std::log(y / q) + f0 + t * (f1 + t * f2);
    }
 
-   if (y < 1e-4 * s) { // x < y << s
-      return 2 - std::log(s / q);
+   if (y < 1e-4 * s) { // x <= y << s
+      const double a = x / s;
+      const double b = y / s;
+      const double k = 1 - a - b;
+      const double d = std::sqrt(k*k - 4*a*b);
+      const double A = 1 + b - a;
+      const double z_small = 2*b / (A + d);
+      const double one_minus_z_large = 2*a / (1 - b + a + d);
+      // H(z_large) == H(1 - z_large).
+      return 2 - log_ratio(s, q) - H(z_small) - H(one_minus_z_large);
    } else if (x < EPSTOL * y) { // x << y
       // s == y
       if (std::abs(y - s) < EPSTOL * std::max(s, y)) {
