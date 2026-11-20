@@ -4,7 +4,7 @@
 
 namespace {
 
-constexpr double EPSTOL = std::numeric_limits<double>::epsilon(); ///< underflow accuracy
+constexpr double EPS = std::numeric_limits<double>::epsilon(); ///< underflow accuracy
 
 /*
  * Degrassi and Sirlin, Phys. Rev. D46 (1992) 3104,
@@ -56,7 +56,7 @@ double log_ratio(double a, double b) noexcept
  */
 double reb0xx(double s, double x, double q) noexcept
 {
-   const double eps_q = EPSTOL * q;
+   const double eps_q = EPS * q;
 
    if (s < eps_q && x < eps_q) {
       return 0; // IR divergence
@@ -78,7 +78,7 @@ double reb0xx(double s, double x, double q) noexcept
       const double xs = 4 * x / s;
       const double sq = std::sqrt(1 - xs);
       return 2 - std::log(x / q) - sq * std::log((1 + sq) / (1 - sq));
-   } else if (s*EPSTOL < x) {
+   } else if (s*EPS < x) {
       const double d = x / s;
       const double logd = std::log(d);
       return 2 - std::log(s / q)
@@ -116,7 +116,7 @@ namespace pv {
  */
 double reb0(double s, double x, double y, double q) noexcept
 {
-   const double eps_q = EPSTOL * q;
+   const double eps_q = EPS * q;
 
    // protect against infrared divergence
    if (s < eps_q && x < eps_q && y < eps_q) {
@@ -128,7 +128,7 @@ double reb0(double s, double x, double y, double q) noexcept
    }
 
    // x == y
-   if (x*(1 + EPSTOL) > y) {
+   if (x*(1 + EPS) > y) {
       return reb0xx(s, x, q);
    }
 
@@ -201,9 +201,9 @@ double reb0(double s, double x, double y, double q) noexcept
       const double one_minus_z_large = 2*a / (1 - b + a + d);
       // H(z_large) == H(1 - z_large).
       return 2 - log_ratio(s, q) - H(z_small) - H(one_minus_z_large);
-   } else if (x < EPSTOL * y) { // x << y
+   } else if (x < EPS * y) { // x << y
       // s == y
-      if (std::abs(y - s) < EPSTOL * std::max(s, y)) {
+      if (std::abs(y - s) < EPS * std::max(s, y)) {
          const double pi = 3.1415926535897932;
          const double a = x / s;
          return 2 - std::log(y / q) - pi * std::sqrt(a) + a - 0.5 * xlogx(a);
