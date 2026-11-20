@@ -173,15 +173,6 @@ double reb0(double s, double x, double y, double q) noexcept
       return -std::log(y / q) + f0 + t * (f1 + t * f2);
    }
 
-   // s << x
-   if (s <= 1e-9 * x) {
-      if (x < EPSTOL * y) {
-         return 1 - std::log(y / q);
-      }
-
-      return 1 - std::log(y / q) + x * std::log(y / x) / (x - y);
-   }
-
    if (y < 1e-4 * s) { // x < y << s
       return 2 - std::log(s / q);
    } else if (x < EPSTOL * y) { // x << y
