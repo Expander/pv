@@ -114,6 +114,65 @@ double reb0(double s, double x, double y, double q) noexcept
       return reb0xx(s, x, q);
    }
 
+   if (s >= 0 && y > 0) {
+      const double r = x / y;
+      const double t = s / y;
+
+      // In diesem Bereich ist A*A - 4*t > 0 und beta < etwa 0.52.
+      if (r <= 1e-2 && t <= 0.5) {
+         const double A = 1 - r + t;
+         const double beta = 2*t / (A + std::sqrt(A*A - 4*t));
+         const double delta = r / (1 - beta);
+
+         double fbeta = 0;
+         double power = beta;
+         for (int n = 1; n < 128; ++n) {
+            const double next = fbeta + power / (n * (n + 1.0));
+            if (next == fbeta) break;
+            fbeta = next;
+            power *= beta;
+         }
+
+         const double mass_correction =
+            delta == 0 ? 0 : delta * std::log(delta) / (1 - delta);
+
+         return 1 - std::log(y / q) + mass_correction + fbeta;
+      }
+   }
+
+   // s << y
+   if (s >= 0 && y > 0 && s <= 1e-5*y) {
+      const double t = s / y;
+      const double r = x / y;
+      const double h = 1 - r;
+      double f0, f1, f2;
+
+      if (h < 0.1) {
+         f0 = f1 = f2 = 0;
+         double p = 1;
+         for (int k = 0; k < 16; ++k) {
+            f1 += p / ((k + 2.0) * (k + 3.0));
+            f2 += p * (k + 1.0)
+               / ((k + 3.0) * (k + 4.0) * (k + 5.0));
+            p *= h;
+         }
+         p = h;
+         for (int n = 1; n <= 16; ++n) {
+            f0 += p / (n * (n + 1.0));
+            p *= h;
+         }
+      } else {
+         const double u = xlogx(r);
+         const double h2 = h * h;
+         f0 = 1 + u / h;
+         f1 = (1 + r) / (2 * h2) + u / (h2 * h);
+         f2 = (1 + 9*r - 9*r*r - r*r*r + 6*(1+r)*u)
+            / (6 * h2 * h2 * h);
+      }
+
+      return -std::log(y / q) + f0 + t * (f1 + t * f2);
+   }
+
    // s << x
    if (s <= 1e-9 * x) {
       if (x < EPSTOL * y) {
@@ -143,6 +202,16 @@ double reb0(double s, double x, double y, double q) noexcept
    const double a = x / s;
    const double b = y / s;
    const double delta = a - b;
+   const double c = 0.5 * (a + b - 1);
+   const double C = 0.5 * (a + b) - 0.25 * delta * delta - 0.25;
+
+   if (C < 0 && c < 0) {
+      const double w = std::sqrt(-C);
+      return 2 - std::log(s / q)
+         + (w - 0.5 * (1 + delta)) * std::log(a)
+         + (w - 0.5 * (1 - delta)) * std::log(b)
+         - 2 * w * std::log(w - c);
+   }
 
    return 2 - std::log(s / q)
           - 0.5 * (1 + delta) * std::log(a)
