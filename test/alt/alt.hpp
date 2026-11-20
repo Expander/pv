@@ -12,4 +12,7 @@ namespace pv {
 // optimized implementation from [hep-ph/9606211]
 double b0_softsusy(double p2, double m1, double m2, double q2) noexcept;
 
+// implementation proposed by ChatGPT Astra
+double b0_gpt_astra(double p2, double m1, double m2, double q2) noexcept;
+
 } // namespace pv
