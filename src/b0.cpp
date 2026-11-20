@@ -27,16 +27,16 @@ double omega(double a, double b) noexcept
    return 0;
 }
 
-// H(z) = z log(z) + (1-z) log(1-z).
-double H(double z) noexcept
+// H(x) = x log(x) + (1-x) log(1-x).
+double H(double x) noexcept
 {
-   if (z == 0 || z == 1) {
+   if (x == 0 || x == 1) {
       return 0;
    }
-   if (z > 0.5) {
-      z = 1 - z;
+   if (x > 0.5) {
+      x = 1 - x;
    }
-   return z * std::log(z) + (1 - z) * std::log1p(-z);
+   return x * std::log(x) + (1 - x) * std::log1p(-x);
 }
 
 double log_ratio(double a, double b) noexcept
