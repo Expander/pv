@@ -57,6 +57,11 @@ void bench(const T& values_d)
             values_d, "Degrassi", "real");
 
    bench_fn([&](double s, double x, double y, double q) {
+               return pv::b0_gpt_astra(s,x,y,q);
+            },
+            values_d, "ChatGPT", "real");
+
+   bench_fn([&](double s, double x, double y, double q) {
                return pv::b0_softsusy(s,x,y,q);
             },
             values_d, "SOFTSUSY", "real");
