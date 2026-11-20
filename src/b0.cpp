@@ -27,10 +27,15 @@ double omega(double a, double b) noexcept
    return 0;
 }
 
+// H(z) = z log(z) + (1-z) log(1-z).
 double H(double z) noexcept
 {
-   if (z == 0)
+   if (z == 0 || z == 1) {
       return 0;
+   }
+   if (z > 0.5) {
+      z = 1 - z;
+   }
    return z * std::log(z) + (1 - z) * std::log1p(-z);
 }
 
