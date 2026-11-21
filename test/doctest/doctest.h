@@ -8411,6 +8411,7 @@ template <typename T>
 String toStreamLit(T t) {
     // NOLINTNEXTLINE(misc-const-correctness)
     std::ostream *os = tlssPush();
+    os->precision(std::numeric_limits<T>::max_digits10);
     os->operator<<(t);
     return tlssPop();
 }
