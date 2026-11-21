@@ -15,38 +15,39 @@ TEST_CASE("B0 special cases")
          continue;
       }
 
-      const double p2 = v.at(0);
-      const double m1 = v.at(1);
-      const double m2 = v.at(2);
-      const double q2 = v.at(3);
-      const double re = v.at(4);
+      const double s = v.at(0);
+      const double x = v.at(1);
+      const double y = v.at(2);
+      const double q = v.at(3);
+      const double b = v.at(4);
       // const double im = v.at(5);
 
-      CHECK_CLOSE(pv::reb0(p2, m1, m2, q2), re, 3e-11);
-      CHECK_CLOSE(b0_degrassi(p2, m1, m2, q2), re, 3e-11);
-      CHECK_CLOSE(pv::b0_gpt_astra(p2, m1, m2, q2), re, 5e-08);
-      CHECK_CLOSE(pv::b0_softsusy(p2, m1, m2, q2), re, 1e-05);
+      INFO("b0(s = " << s << ", x = " << x << ", y = " << y << ", q = " << q << ") = " << b);
+      CHECK_CLOSE(pv::reb0(s, x, y, q), b, 3e-11);
+      CHECK_CLOSE(b0_degrassi(s, x, y, q), b, 3e-11);
+      CHECK_CLOSE(pv::b0_gpt_astra(s, x, y, q), b, 5e-08);
+      CHECK_CLOSE(pv::b0_softsusy(s, x, y, q), b, 1e-05);
    }
 }
 
 
 TEST_CASE("B0 special cases")
 {
-   const double p2 = 91*91;
-   const double q2 = 100*100;
+   const double s = 91*91;
+   const double q = 100*100;
 
    // test special cases
    CHECK_CLOSE(pv::reb0(2, 3, 4, 1), -1.14772143349266490, 3e-11);
    CHECK_CLOSE(pv::reb0(1, 1, 2, 1), -0.263943507355163, 3e-11);
-   CHECK_EQUAL(pv::reb0(0, 0, 0, q2), 0.0); // IR divergent case
-   CHECK_CLOSE(pv::reb0(p2, 0, 0, q2), 2 - log(p2/q2), 3e-11);
-   CHECK_CLOSE(pv::reb0(0, p2, 0, q2), 1 - log(p2/q2), 3e-11);
-   CHECK_CLOSE(pv::reb0(p2, p2, 0, q2), 2 - log(p2/q2), 3e-11);
-   CHECK_CLOSE(pv::reb0(0, p2, p2, q2), -std::log(p2/q2), 3e-11);
+   CHECK_EQUAL(pv::reb0(0, 0, 0, q), 0.0); // IR divergent case
+   CHECK_CLOSE(pv::reb0(s, 0, 0, q), 2 - log(s/q), 3e-11);
+   CHECK_CLOSE(pv::reb0(0, s, 0, q), 1 - log(s/q), 3e-11);
+   CHECK_CLOSE(pv::reb0(s, s, 0, q), 2 - log(s/q), 3e-11);
+   CHECK_CLOSE(pv::reb0(0, s, s, q), -std::log(s/q), 3e-11);
 
    // symmetries
-   CHECK_EQUAL(pv::reb0(0, 0, p2, q2), pv::reb0(0, p2, 0, q2));
-   CHECK_EQUAL(pv::reb0(p2, 0, p2, q2), pv::reb0(p2, p2, 0, q2));
+   CHECK_EQUAL(pv::reb0(0, 0, s, q), pv::reb0(0, s, 0, q));
+   CHECK_EQUAL(pv::reb0(s, 0, s, q), pv::reb0(s, s, 0, q));
 }
 
 
@@ -61,14 +62,15 @@ TEST_CASE("B0 limits")
          continue;
       }
 
-      const double p2 = v.at(0);
-      const double m1 = v.at(1);
-      const double m2 = v.at(2);
-      const double q2 = v.at(3);
-      const double re = v.at(4);
+      const double s = v.at(0);
+      const double x = v.at(1);
+      const double y = v.at(2);
+      const double q = v.at(3);
+      const double b = v.at(4);
 
-      CHECK_CLOSE(pv::reb0(p2, m1, m2, q2), re, 1e-08);
-      CHECK_CLOSE(pv::b0_gpt_astra(p2, m1, m2, q2), re, 1e-12);
+      INFO("b0(s = " << s << ", x = " << x << ", y = " << y << ", q = " << q << ") = " << b);
+      CHECK_CLOSE(pv::reb0(s, x, y, q), b, 1e-08);
+      CHECK_CLOSE(pv::b0_gpt_astra(s, x, y, q), b, 1e-12);
    }
 }
 
@@ -84,12 +86,13 @@ TEST_CASE("B0 equal masses")
          continue;
       }
 
-      const double p2 = v.at(0);
-      const double m1 = v.at(1);
-      const double m2 = v.at(2);
-      const double q2 = v.at(3);
-      const double re = v.at(4);
+      const double s = v.at(0);
+      const double x = v.at(1);
+      const double y = v.at(2);
+      const double q = v.at(3);
+      const double b = v.at(4);
 
-      CHECK_CLOSE(pv::reb0(p2, m1, m2, q2), re, 1e-12);
+      INFO("b0(s = " << s << ", x = " << x << ", y = " << y << ", q = " << q << ") = " << b);
+      CHECK_CLOSE(pv::reb0(s, x, y, q), b, 1e-12);
    }
 }

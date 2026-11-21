@@ -19,10 +19,11 @@ TEST_CASE("A0")
          continue;
       }
 
-      const double m2 = v.at(0);
-      const double q2 = v.at(1);
-      const double re = v.at(2);
+      const double x = v.at(0);
+      const double q = v.at(1);
+      const double a = v.at(2);
 
-      CHECK_CLOSE(a0(m2, q2), re, 1e-15);
+      INFO("a0(x = " << x << ", q = " << q << ") = " << a);
+      CHECK_CLOSE(a0(x, q), a, 1e-15);
    }
 }
