@@ -4,7 +4,7 @@
 #include "test.hpp"
 
 
-TEST_CASE("B0 special cases")
+TEST_CASE("B0 grid")
 {
    const std::string filename =
       std::string(TEST_DATA_DIR) + PATH_SEPARATOR + "B0.txt";
