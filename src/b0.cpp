@@ -13,15 +13,15 @@ constexpr double EPS = std::numeric_limits<double>::epsilon(); ///< underflow ac
 double omega(double a, double b) noexcept
 {
    const double d = a - b;
-   const double C = 0.5 * (a + b) - 0.25 * d * d - 0.25;
-   const double c = 0.5 * (a + b - 1);
+   const double C = 0.5*(a + b) - 0.25*d*d - 0.25;
+   const double c = 0.5*(a + b - 1);
 
    if (C > 0) {
       const double r = std::sqrt(C);
-      return r * std::atan2(r, c);
+      return r*std::atan2(r, c);
    } else if (C < 0) {
       const double sC = std::sqrt(-C);
-      return 0.5 * sC * std::log((c - sC) / (c + sC));
+      return 0.5*sC*std::log((c - sC)/(c + sC));
    }
 
    return 0;
@@ -36,12 +36,12 @@ double H(double x) noexcept
    if (x > 0.5) {
       x = 1 - x;
    }
-   return x * std::log(x) + (1 - x) * std::log1p(-x);
+   return x*std::log(x) + (1 - x)*std::log1p(-x);
 }
 
 double log_ratio(double a, double b) noexcept
 {
-   const double r = a / b;
+   const double r = a/b;
 
    if (r >= std::numeric_limits<double>::min() && std::isfinite(r)) {
       return std::log(r);
@@ -61,13 +61,13 @@ double log_ratio(double a, double b) noexcept
  */
 double reb0xx(double s, double x, double q) noexcept
 {
-   const double eps_q = EPS * q;
+   const double eps_q = EPS*q;
 
    if (s < eps_q && x < eps_q) {
       return 0; // IR divergence
    } else if (s < 1e-3*x) {
-      const double d = s / x;
-      return -std::log(x / q)
+      const double d = s/x;
+      return -std::log(x/q)
          + d*(1./6
          + d*(1./60
          + d*(1./420
@@ -75,35 +75,35 @@ double reb0xx(double s, double x, double q) noexcept
          + d*(1./13860
          + d*(1./72072
          + d*1./360360))))));
-   } else if (s <= 4 * x) {
-      const double xs = 4 * x / s;
-      return 2 - std::log(x / q) -
-             2 * std::sqrt(xs - 1) * std::asin(std::sqrt(1 / xs));
-   } else if (s < 1e2 * x) {
-      const double xs = 4 * x / s;
+   } else if (s <= 4*x) {
+      const double xs = 4*x/s;
+      return 2 - std::log(x/q) -
+             2*std::sqrt(xs - 1)*std::asin(std::sqrt(1/xs));
+   } else if (s < 1e2*x) {
+      const double xs = 4*x/s;
       const double sq = std::sqrt(1 - xs);
-      return 2 - std::log(x / q) - sq * std::log((1 + sq) / (1 - sq));
+      return 2 - std::log(x/q) - sq*std::log((1 + sq)/(1 - sq));
    } else if (s*EPS < x) {
-      const double d = x / s;
+      const double d = x/s;
       const double logd = std::log(d);
-      return 2 - std::log(s / q)
-         + d * (2 * (1 - logd)
-         + d * (-1 - 2 * logd
-         + d * (-10./3 - 4 * logd
-         + d * (-59./6 - 10 * logd
-         + d * (-449./15 - 28 * logd
-         + d * (-1417./15 - 84 * logd
-         + d * (-32254./105 - 264 * logd
-         + d * (-429697./420 - 858 * logd))))))));
+      return 2 - std::log(s/q)
+         + d*(2*(1 - logd)
+         + d*(-1 - 2*logd
+         + d*(-10./3 - 4*logd
+         + d*(-59./6 - 10*logd
+         + d*(-449./15 - 28*logd
+         + d*(-1417./15 - 84*logd
+         + d*(-32254./105 - 264*logd
+         + d*(-429697./420 - 858*logd))))))));
    } else {
-      return 2 - std::log(s / q);
+      return 2 - std::log(s/q);
    }
 }
 
-/// returns x * log(x)
+/// returns x*log(x)
 double xlogx(double x) noexcept
 {
-   return x == 0 ? 0 : x * std::log(x);
+   return x == 0 ? 0 : x*std::log(x);
 }
 
 } // anonymous namespace
@@ -121,7 +121,7 @@ namespace pv {
  */
 double reb0(double s, double x, double y, double q) noexcept
 {
-   const double eps_q = EPS * q;
+   const double eps_q = EPS*q;
 
    // protect against infrared divergence
    if (s < eps_q && x < eps_q && y < eps_q) {
@@ -138,28 +138,28 @@ double reb0(double s, double x, double y, double q) noexcept
    }
 
    if (s >= 0 && y > 0) {
-      const double r = x / y;
-      const double t = s / y;
+      const double r = x/y;
+      const double t = s/y;
 
       // In diesem Bereich ist A*A - 4*t > 0 und beta < etwa 0.52.
       if (r <= 1e-2 && t <= 0.5) {
          const double A = 1 - r + t;
-         const double beta = 2*t / (A + std::sqrt(A*A - 4*t));
-         const double delta = r / (1 - beta);
+         const double beta = 2*t/(A + std::sqrt(A*A - 4*t));
+         const double delta = r/(1 - beta);
 
          double fbeta = 0;
          double power = beta;
          for (int n = 1; n < 128; ++n) {
-            const double next = fbeta + power / (n * (n + 1.0));
+            const double next = fbeta + power/(n*(n + 1.0));
             if (next == fbeta) break;
             fbeta = next;
             power *= beta;
          }
 
          const double mass_correction =
-            delta == 0 ? 0 : delta * std::log(delta) / (1 - delta);
+            delta == 0 ? 0 : delta*std::log(delta)/(1 - delta);
 
-         return 1 - std::log(y / q) + mass_correction + fbeta;
+         return 1 - std::log(y/q) + mass_correction + fbeta;
       }
    }
 
@@ -196,49 +196,49 @@ double reb0(double s, double x, double y, double q) noexcept
       return -std::log(y/q) + f0 + t*(f1 + t*f2);
    }
 
-   if (y < 1e-4 * s) { // x <= y << s
-      const double a = x / s;
-      const double b = y / s;
+   if (y < 1e-4*s) { // x <= y << s
+      const double a = x/s;
+      const double b = y/s;
       const double k = 1 - a - b;
       const double d = std::sqrt(k*k - 4*a*b);
       const double A = 1 + b - a;
-      const double z_small = 2*b / (A + d);
-      const double one_minus_z_large = 2*a / (1 - b + a + d);
+      const double z_small = 2*b/(A + d);
+      const double one_minus_z_large = 2*a/(1 - b + a + d);
       // H(z_large) == H(1 - z_large).
       return 2 - log_ratio(s, q) - H(z_small) - H(one_minus_z_large);
-   } else if (x < EPS * y) { // x << y
+   } else if (x < EPS*y) { // x << y
       // s == y
-      if (std::abs(y - s) < EPS * std::max(s, y)) {
+      if (std::abs(y - s) < EPS*std::max(s, y)) {
          const double pi = 3.1415926535897932;
-         const double a = x / s;
-         return 2 - std::log(y / q) - pi * std::sqrt(a) + a - 0.5 * xlogx(a);
+         const double a = x/s;
+         return 2 - std::log(y/q) - pi*std::sqrt(a) + a - 0.5*xlogx(a);
       } else if (s < y) {
-         const double b = y / s;
-         return 2 - std::log(y / q) + (b - 1) * std::log1p(-1 / b);
+         const double b = y/s;
+         return 2 - std::log(y/q) + (b - 1)*std::log1p(-1/b);
       } else { // s > y
-         const double b = y / s;
-         return 2 - std::log(y / q) + (b - 1) * std::log(1 / b - 1);
+         const double b = y/s;
+         return 2 - std::log(y/q) + (b - 1)*std::log(1/b - 1);
       }
    }
 
-   const double a = x / s;
-   const double b = y / s;
+   const double a = x/s;
+   const double b = y/s;
    const double delta = a - b;
-   const double c = 0.5 * (a + b - 1);
-   const double C = 0.5 * (a + b) - 0.25 * delta * delta - 0.25;
+   const double c = 0.5*(a + b - 1);
+   const double C = 0.5*(a + b) - 0.25*delta*delta - 0.25;
 
    if (C < 0 && c < 0) {
       const double w = std::sqrt(-C);
-      return 2 - std::log(s / q)
-         + (w - 0.5 * (1 + delta)) * std::log(a)
-         + (w - 0.5 * (1 - delta)) * std::log(b)
-         - 2 * w * std::log(w - c);
+      return 2 - std::log(s/q)
+         + (w - 0.5*(1 + delta))*std::log(a)
+         + (w - 0.5*(1 - delta))*std::log(b)
+         - 2*w*std::log(w - c);
    }
 
-   return 2 - std::log(s / q)
-          - 0.5 * (1 + delta) * std::log(a)
-          - 0.5 * (1 - delta) * std::log(b)
-          - 2 * omega(a, b);
+   return 2 - std::log(s/q)
+          - 0.5*(1 + delta)*std::log(a)
+          - 0.5*(1 - delta)*std::log(b)
+          - 2*omega(a, b);
 }
 
 } // namespace pv
