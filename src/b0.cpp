@@ -27,7 +27,11 @@ double omega(double a, double b) noexcept
    return 0;
 }
 
-// H(x) = x log(x) + (1-x) log(1-x).
+
+/*
+ * H(x) = x*log(x) + (1-x)*log(1-x).
+ * H(z) == H(1 - z).
+ */
 double H(double x) noexcept
 {
    if (x == 0 || x == 1) {
@@ -141,7 +145,7 @@ double reb0(double s, double x, double y, double q) noexcept
       const double r = x/y;
       const double t = s/y;
 
-      // In diesem Bereich ist A*A - 4*t > 0 und beta < etwa 0.52.
+      // in this region A*A - 4*t > 0 and beta < ~0.52.
       if (r <= 1e-2 && t <= 0.5) {
          const double A = 1 - r + t;
          const double beta = 2*t/(A + std::sqrt(A*A - 4*t));
@@ -204,7 +208,6 @@ double reb0(double s, double x, double y, double q) noexcept
       const double A = 1 + b - a;
       const double z_small = 2*b/(A + d);
       const double one_minus_z_large = 2*a/(1 - b + a + d);
-      // H(z_large) == H(1 - z_large).
       return 2 - log_ratio(s, q) - H(z_small) - H(one_minus_z_large);
    } else if (x < EPS*y) { // x << y
       // s == y
