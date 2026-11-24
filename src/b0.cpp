@@ -164,40 +164,35 @@ double reb0(double s, double x, double y, double q) noexcept
             delta == 0 ? 0 : delta*std::log(delta)/(1 - delta);
 
          return 1 - std::log(y/q) + mass_correction + fbeta;
-      }
-   }
+      } else if (t <= 1e-5) { // s << y
+         const double h = 1 - r;
+         double f0, f1, f2;
 
-   // s << y
-   if (s >= 0 && y > 0 && s <= 1e-5*y) {
-      const double t = s/y;
-      const double r = x/y;
-      const double h = 1 - r;
-      double f0, f1, f2;
-
-      if (h < 0.1) {
-         f0 = f1 = f2 = 0;
-         double p = 1;
-         for (int k = 0; k < 16; ++k) {
-            f1 += p/((k + 2.0)*(k + 3.0));
-            f2 += p*(k + 1.0)/((k + 3.0)*(k + 4.0)*(k + 5.0));
-            p *= h;
+         if (h < 0.1) {
+            f0 = f1 = f2 = 0;
+            double p = 1;
+            for (int k = 0; k < 16; ++k) {
+               f1 += p/((k + 2.0)*(k + 3.0));
+               f2 += p*(k + 1.0)/((k + 3.0)*(k + 4.0)*(k + 5.0));
+               p *= h;
+            }
+            p = h;
+            for (int n = 1; n <= 16; ++n) {
+               f0 += p/(n*(n + 1.0));
+               p *= h;
+            }
+         } else {
+            const double u = xlogx(r);
+            const double ih = 1/h;
+            const double ih2 = ih*ih;
+            const double ih3 = ih*ih2;
+            f0 = 1 + u*ih;
+            f1 = 0.5*(1 + r)*ih2 + u*ih3;
+            f2 = 1./6*(1 + r*(9 - r*(9 + r)) + 6*(1 + r)*u)*ih3*ih2;
          }
-         p = h;
-         for (int n = 1; n <= 16; ++n) {
-            f0 += p/(n*(n + 1.0));
-            p *= h;
-         }
-      } else {
-         const double u = xlogx(r);
-         const double ih = 1/h;
-         const double ih2 = ih*ih;
-         const double ih3 = ih*ih2;
-         f0 = 1 + u*ih;
-         f1 = 0.5*(1 + r)*ih2 + u*ih3;
-         f2 = 1./6*(1 + r*(9 - r*(9 + r)) + 6*(1 + r)*u)*ih3*ih2;
-      }
 
-      return -std::log(y/q) + f0 + t*(f1 + t*f2);
+         return -std::log(y/q) + f0 + t*(f1 + t*f2);
+      }
    }
 
    if (y < 1e-4*s) { // x <= y << s
