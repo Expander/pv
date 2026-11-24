@@ -48,6 +48,24 @@ TEST_CASE("B0 special cases")
    // symmetries
    CHECK_EQUAL(pv::reb0(0, 0, s, q), pv::reb0(0, s, 0, q));
    CHECK_EQUAL(pv::reb0(s, 0, s, q), pv::reb0(s, s, 0, q));
+
+   // renormalization scale <= 0
+   if (std::numeric_limits<double>::has_infinity) {
+      CHECK(std::isinf(pv::reb0(0, 0, 0, 0)));
+      CHECK(std::isinf(pv::reb0(1, 2, 3, 0)));
+      CHECK(std::isinf(pv::reb0(1, 2, 3, -1)));
+   }
+
+   // IR divergence
+   CHECK(pv::reb0(0, 0, 0, 1) == 0);
+
+   // small input
+   {
+      constexpr double min = std::numeric_limits<double>::min();
+      constexpr double pi = 3.1415926535897932;
+      constexpr double q = 1;
+      CHECK(pv::reb0(min, min, min, q) == 2 - pi/std::sqrt(3) - std::log(min/q));
+   }
 }
 
 

@@ -65,9 +65,7 @@ double log_ratio(double a, double b) noexcept
  */
 double reb0xx(double s, double x, double q) noexcept
 {
-   const double eps_q = EPS*q;
-
-   if (s < eps_q && x < eps_q) {
+   if (s == 0 && x == 0) {
       return 0; // IR divergence
    } else if (s < 1e-3*x) {
       const double d = s/x;
@@ -79,6 +77,9 @@ double reb0xx(double s, double x, double q) noexcept
          + d*(1./13860
          + d*(1./72072
          + d*1./360360))))));
+   } else if (s == x) {
+      const double c = 0.18620063576578216; // 2 - Pi/Sqrt[3]
+      return c - std::log(x/q);
    } else if (s <= 4*x) {
       const double xs = 4*x/s;
       return 2 - std::log(x/q) -
@@ -125,10 +126,12 @@ namespace pv {
  */
 double reb0(double s, double x, double y, double q) noexcept
 {
-   const double eps_q = EPS*q;
+   if (q <= 0) {
+      return -std::numeric_limits<double>::infinity();
+   }
 
    // protect against infrared divergence
-   if (s < eps_q && x < eps_q && y < eps_q) {
+   if (s == 0 && x == 0 && y == 0) {
       return 0;
    }
 
