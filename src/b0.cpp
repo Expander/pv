@@ -137,7 +137,7 @@ double reb0(double s, double x, double y, double q) noexcept
    }
 
    // x == y
-   if (x*(1 + EPS) > y) {
+   if (x*(1 + EPS) >= y) {
       return reb0xx(s, x, q);
    }
 
@@ -192,30 +192,28 @@ double reb0(double s, double x, double y, double q) noexcept
          }
 
          return -std::log(y/q) + f0 + t*(f1 + t*f2);
-      }
-   }
-
-   if (y < 1e-4*s) { // x <= y << s
-      const double a = x/s;
-      const double b = y/s;
-      const double k = 1 - a - b;
-      const double d = std::sqrt(k*k - 4*a*b);
-      const double A = 1 + b - a;
-      const double z_small = 2*b/(A + d);
-      const double one_minus_z_large = 2*a/(1 - b + a + d);
-      return 2 - log_ratio(s, q) - H(z_small) - H(one_minus_z_large);
-   } else if (x < EPS*y) { // x << y
-      // s == y
-      if (std::abs(y - s) < EPS*std::max(s, y)) {
-         const double pi = 3.1415926535897932;
+      } else if (t > 1e4) { // x <= y << s
          const double a = x/s;
-         return 2 - std::log(y/q) - pi*std::sqrt(a) + a - 0.5*xlogx(a);
-      } else if (s < y) {
-         const double b = y/s;
-         return 2 - std::log(y/q) + (b - 1)*std::log1p(-1/b);
-      } else { // s > y
-         const double b = y/s;
-         return 2 - std::log(y/q) + (b - 1)*std::log(1/b - 1);
+         const double b = 1/t;
+         const double k = 1 - a - b;
+         const double d = std::sqrt(k*k - 4*a*b);
+         const double A = 1 + b - a;
+         const double z_small = 2*b/(A + d);
+         const double one_minus_z_large = 2*a/(1 - b + a + d);
+         return 2 - log_ratio(s, q) - H(z_small) - H(one_minus_z_large);
+      } else if (r < EPS) { // x << y
+         // s == y
+         if (std::abs(y - s) < EPS*std::max(s, y)) {
+            const double pi = 3.1415926535897932;
+            const double a = x/s;
+            return 2 - std::log(y/q) - pi*std::sqrt(a) + a - 0.5*xlogx(a);
+         } else if (s < y) {
+            const double b = 1/t;
+            return 2 - std::log(y/q) + (b - 1)*std::log1p(-1/b);
+         } else { // s > y
+            const double b = 1/t;
+            return 2 - std::log(y/q) + (b - 1)*std::log(1/b - 1);
+         }
       }
    }
 
