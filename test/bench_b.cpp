@@ -28,10 +28,7 @@ void bench_fn(Fn f, const std::vector<T>& values, const std::string& name,
 
 void print_line(char c)
 {
-   for (int i = 0; i < 60; ++i) {
-      std::cout << c;
-   }
-   std::cout << '\n';
+   std::cout << std::string(60, c) << '\n';
 }
 
 void print_headline(const std::string& text)
