@@ -80,10 +80,7 @@ int main()
    std::vector<std::array<double, 4>> values(N);
 
    for (std::size_t i = 0; i < N; ++i) {
-      values.at(i).at(0) = s.at(i);
-      values.at(i).at(1) = x.at(i);
-      values.at(i).at(2) = y.at(i);
-      values.at(i).at(3) = q.at(i);
+      values.at(i) = {s.at(i), x.at(i), y.at(i), q.at(i)};
    }
 
    bench(values);
