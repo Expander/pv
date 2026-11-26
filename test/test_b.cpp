@@ -111,6 +111,6 @@ TEST_CASE("B0 equal masses")
       const double b = v.at(4);
 
       INFO("b0(s = " << s << ", x = " << x << ", y = " << y << ", q = " << q << ") = " << b);
-      CHECK_CLOSE(pv::reb0(s, x, y, q), b, 1e-12);
+      CHECK_CLOSE(pv::reb0(s, x, y, q), b, 1e-13);
    }
 }

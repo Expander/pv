@@ -67,7 +67,7 @@ double reb0xx(double s, double x, double q) noexcept
 {
    if (s == 0 && x == 0) {
       return 0; // IR divergence
-   } else if (s < 1e-3*x) {
+   } else if (s < 5e-3*x) {
       const double d = s/x;
       return -std::log(x/q)
          + d*(1./6
