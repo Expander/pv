@@ -25,6 +25,7 @@ TEST_CASE("B0 grid")
       INFO("b0(s = " << s << ", x = " << x << ", y = " << y << ", q = " << q << ") = " << b);
       CHECK_CLOSE(pv::reb0(s, x, y, q), b, 3e-11);
       CHECK_CLOSE(b0_degrassi(s, x, y, q), b, 3e-11);
+      CHECK_CLOSE(pv::b0_neg(s, x, y, q), b, 1e-07);
       CHECK_CLOSE(pv::b0_gpt_astra(s, x, y, q), b, 5e-08);
       CHECK_CLOSE(pv::b0_softsusy(s, x, y, q), b, 1e-05);
    }
