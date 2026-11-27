@@ -216,7 +216,7 @@ double reb0(double s, double x, double y, double q) noexcept
 
    const double a = x/s;
    const double b = y/s;
-   const double delta = a - b;
+   const double d = a - b; // Delta
    const bool s_approx_y = s > 0 && a >= 0 && a < 1e-2
       && std::abs(b - 1) < 0.1;
    const double r = s_approx_y
@@ -224,19 +224,19 @@ double reb0(double s, double x, double y, double q) noexcept
       : 0.5*(a + b - 1); // A - 1/2
    const double c = s_approx_y
       ? a*b - r*r
-      : 0.5*(a + b) - 0.25*delta*delta - 0.25;
+      : 0.5*(a + b) - 0.25*d*d - 0.25;
 
    if (c < 0 && r < 0) {
       const double w = std::sqrt(-c);
       return 2 - std::log(s/q)
-         + (w - 0.5*(1 + delta))*std::log(a)
-         + (w - 0.5*(1 - delta))*std::log(b)
+         + (w - 0.5*(1 + d))*std::log(a)
+         + (w - 0.5*(1 - d))*std::log(b)
          - 2*w*std::log(w - r);
    }
 
    return 2 - std::log(s/q)
-      - 0.5*(1 + delta)*std::log(a)
-      - 0.5*(1 - delta)*std::log(b)
+      - 0.5*(1 + d)*std::log(a)
+      - 0.5*(1 - d)*std::log(b)
       - 2*omega(c, r);
 }
 
