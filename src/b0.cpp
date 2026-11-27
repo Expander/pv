@@ -129,8 +129,16 @@ double reb0(double s, double x, double y, double q) noexcept
       return 0;
    }
 
-   if (x > y) {
+   // symmetry Re[B0(s,x,y,q)] == Re[B0(s,y,x,q)]
+   if (std::abs(x) > std::abs(y)) {
       std::swap(x, y);
+   }
+
+   // symmetry Re[B0(-s,-x,-y,q)] == Re[B0(s,x,y,q)]
+   if (s < 0 && x < 0 && y < 0) {
+      s = -s;
+      x = -x;
+      y = -y;
    }
 
    // x == y
