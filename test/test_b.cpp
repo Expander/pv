@@ -116,3 +116,26 @@ TEST_CASE("B0 equal masses")
       CHECK_CLOSE(pv::b0_gpt_astra(s, x, y, q), b, 1e-14);
    }
 }
+
+
+TEST_CASE("B0 negative")
+{
+   const std::string filename =
+      std::string(TEST_DATA_DIR) + PATH_SEPARATOR + "B0_negative.txt";
+   const auto data = read_from_file(filename);
+
+   for (const auto& v: data) {
+      if (v.size() < 5) {
+         continue;
+      }
+
+      const double s = v.at(0);
+      const double x = v.at(1);
+      const double y = v.at(2);
+      const double q = v.at(3);
+      const double b = v.at(4);
+
+      INFO("b0(s = " << s << ", x = " << x << ", y = " << y << ", q = " << q << ") = " << b);
+      CHECK_CLOSE(pv::b0_neg(s, x, y, q), b, 1e-13);
+   }
+}
