@@ -112,5 +112,6 @@ TEST_CASE("B0 equal masses")
 
       INFO("b0(s = " << s << ", x = " << x << ", y = " << y << ", q = " << q << ") = " << b);
       CHECK_CLOSE(pv::reb0(s, x, y, q), b, 1e-13);
+      CHECK_CLOSE(pv::b0_gpt_astra(s, x, y, q), b, 1e-14);
    }
 }
