@@ -9,6 +9,9 @@ double b0_degrassi(double p2, double m1, double m2, double q2);
 
 namespace pv {
 
+// implementation for negative p2, m1, m2
+double b0_neg(double p2, double m1, double m2, double q2) noexcept;
+
 // optimized implementation from [hep-ph/9606211]
 double b0_softsusy(double p2, double m1, double m2, double q2) noexcept;
 
