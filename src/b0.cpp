@@ -10,23 +10,17 @@ constexpr double EPS = std::numeric_limits<double>::epsilon(); ///< underflow ac
  * Degrassi and Sirlin, Phys. Rev. D46 (1992) 3104,
  * Appendix A, Eq.(A3)
  */
-double omega(double a, double b) noexcept
+double omega(double c, double r) noexcept
 {
-   const double d = a - b;
-   const double C = 0.5*(a + b) - 0.25*d*d - 0.25;
-   const double c = 0.5*(a + b - 1);
-
-   if (C > 0) {
-      const double r = std::sqrt(C);
-      return r*std::atan2(r, c);
-   } else if (C < 0) {
-      const double sC = std::sqrt(-C);
-      return 0.5*sC*std::log((c - sC)/(c + sC));
+   if (c > 0) {
+      const double w = std::sqrt(c);
+      return w*std::atan2(w, r);
+   } else if (c < 0) {
+      const double w = std::sqrt(-c);
+      return 0.5*w*std::log((r - w)/(r + w));
    }
-
    return 0;
 }
-
 
 /*
  * H(x) = x*log(x) + (1-x)*log(1-x).
@@ -223,21 +217,27 @@ double reb0(double s, double x, double y, double q) noexcept
    const double a = x/s;
    const double b = y/s;
    const double delta = a - b;
-   const double c = 0.5*(a + b - 1);
-   const double C = 0.5*(a + b) - 0.25*delta*delta - 0.25;
+   const bool s_approx_y = s > 0 && a >= 0 && a < 1e-2
+      && std::abs(b - 1) < 0.1;
+   const double r = s_approx_y
+      ? 0.5*((x - (s - y))/s)
+      : 0.5*(a + b - 1); // A - 1/2
+   const double c = s_approx_y
+      ? a*b - r*r
+      : 0.5*(a + b) - 0.25*delta*delta - 0.25;
 
-   if (C < 0 && c < 0) {
-      const double w = std::sqrt(-C);
+   if (c < 0 && r < 0) {
+      const double w = std::sqrt(-c);
       return 2 - std::log(s/q)
          + (w - 0.5*(1 + delta))*std::log(a)
          + (w - 0.5*(1 - delta))*std::log(b)
-         - 2*w*std::log(w - c);
+         - 2*w*std::log(w - r);
    }
 
    return 2 - std::log(s/q)
-          - 0.5*(1 + delta)*std::log(a)
-          - 0.5*(1 - delta)*std::log(b)
-          - 2*omega(a, b);
+      - 0.5*(1 + delta)*std::log(a)
+      - 0.5*(1 - delta)*std::log(b)
+      - 2*omega(c, r);
 }
 
 } // namespace pv

@@ -87,7 +87,7 @@ TEST_CASE("B0 limits")
       const double b = v.at(4);
 
       INFO("b0(s = " << s << ", x = " << x << ", y = " << y << ", q = " << q << ") = " << b);
-      CHECK_CLOSE(pv::reb0(s, x, y, q), b, 1e-08);
+      CHECK_CLOSE(pv::reb0(s, x, y, q), b, 1e-11);
       CHECK_CLOSE(pv::b0_gpt_astra(s, x, y, q), b, 1e-12);
    }
 }
