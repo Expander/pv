@@ -30,23 +30,16 @@ double lambda(double s, double x, double y) noexcept
    return l*l - 4*x*y;
 }
 
-double log_abs_ratio(double s, double q) noexcept
-{
-   return std::log(std::abs(s)/q);
-}
-
-// Voraussetzung: q > 0; log_abs_ratio(a, q) berechnet log(abs(a)/q)
-// ohne Über- oder Unterlauf der Division.
 double reb0_x0(double s, double y, double q) noexcept
 {
    if (y == 0)
-      return s == 0 ? 0 : 2 - log_abs_ratio(s, q);
+      return s == 0 ? 0 : 2 - std::log(std::abs(s/q));
 
    if (s == 0)
-      return 1 - log_abs_ratio(y, q);
+      return 1 - std::log(std::abs(y/q));
 
    if (s == y)
-      return 2 - log_abs_ratio(y, q);
+      return 2 - std::log(std::abs(y/q));
 
    // |s/y| klein: konvergente Reihe, auch für negatives s/y.
    if (std::abs(s) <= 0.5*std::abs(y)) {
@@ -59,25 +52,25 @@ double reb0_x0(double s, double y, double q) noexcept
          sum = next;
          power *= t;
       }
-      return 1 - log_abs_ratio(y, q) + sum;
+      return 1 - std::log(std::abs(y/q)) + sum;
    }
 
    // |y/s| klein: Darstellung über H_R(y/s).
    if (std::abs(y) <= 0.5*std::abs(s)) {
       const double b = y/s;
       const double h = xlogabsx(b) + (1 - b)*std::log1p(-b);
-      return 2 - log_abs_ratio(s, q) - h;
+      return 2 - std::log(std::abs(s/q)) - h;
    }
 
    // Vergleichbare Beträge: nahe s == y die Differenz direkt bilden.
    if (std::signbit(s) == std::signbit(y)) {
       const double d = y - s;
-      return 2 - log_abs_ratio(y, q)
+      return 2 - std::log(std::abs(y/q))
              + (d/s)*std::log(std::abs(d/y));
    }
 
    // Entgegengesetzte Vorzeichen: hier gibt es keine Auslöschung in 1-s/y.
-   return 2 - log_abs_ratio(y, q)
+   return 2 - std::log(std::abs(y/q))
           + (y/s - 1)*std::log1p(-s/y);
 }
 
