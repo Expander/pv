@@ -21,7 +21,7 @@ double H(double x) noexcept
    if (x > 0.5) {
       x = 1 - x;
    }
-   return x*std::log(x) + (1 - x)*std::log1p(-x);
+   return x*std::log(std::abs(x)) + (1 - x)*std::log(std::abs(1 - x));
 }
 
 double lambda(double s, double x, double y) noexcept
